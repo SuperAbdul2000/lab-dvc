@@ -1,0 +1,41 @@
+stages:
+
+  featurize:
+    cmd: python src/featurization.py
+    deps:
+      - data/dataset.csv
+      - src/featurization.py
+    outs:
+      - data/dataset_featurized.csv
+
+  split:
+    cmd: python src/split_dataset.py
+    deps:
+      - data/dataset_featurized.csv
+      - src/split_dataset.py
+      - params.yaml
+    outs:
+      - data/train.csv
+      - data/test.csv
+    params:
+      - split_dataset.test_size
+
+  train:
+    cmd: python src/train.py
+    deps:
+      - data/train.csv
+      - src/train.py
+      - params.yaml
+    outs:
+      - data/model.joblib
+    params:
+      - train.epochs
+
+  evaluate:
+    cmd: python src/evaluate.py
+    deps:
+      - data/model.joblib
+      - data/test.csv
+      - src/evaluate.py
+    metrics:
+      - data/eval.txt
