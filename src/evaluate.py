@@ -25,5 +25,3 @@ mse = mean_squared_error(y_test, preds)
 # сохраняем результат
 with open("data/eval.txt", "w") as f:
     f.write(f"MSE: {mse}\n")
-
-print(f"Evaluation done. MSE: {mse}")
