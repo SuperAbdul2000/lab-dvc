@@ -1,6 +1,7 @@
 import pandas as pd
 import joblib
 from sklearn.linear_model import LinearRegression
+from sklearn.impute import SimpleImputer
 import yaml
 import os
 
@@ -18,10 +19,14 @@ df = pd.read_csv("data/train.csv")
 X = df.drop(columns=['SeriousDlqin2yrs'], errors='ignore')
 y = df['SeriousDlqin2yrs']
 
+# заменяем пропуски на среднее значение для числовых колонок
+imputer = SimpleImputer(strategy='mean')
+X_imputed = pd.DataFrame(imputer.fit_transform(X), columns=X.columns)
+
 # создаем и тренируем модель
 model = LinearRegression()
 for i in range(epochs):
-    model.fit(X, y)
+    model.fit(X_imputed, y)
 
 # сохраняем модель
 joblib.dump(model, "data/model.joblib")
