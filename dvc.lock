@@ -1,0 +1,45 @@
+schema: '2.0'
+stages:
+  featurize:
+    cmd: python src/featurization.py
+    deps:
+    - path: data/dataset.csv
+      hash: md5
+      md5: 47ab86a04e9cb619c1f592540060bb07
+      size: 65581
+    - path: src/featurization.py
+      hash: md5
+      md5: f8ddf58b81cedd749d89d5872a3e8b4c
+      size: 712
+    outs:
+    - path: data/dataset_featurized.csv
+      hash: md5
+      md5: 47f59e06df7d86616cc6892cbccbba0f
+      size: 100952
+  split:
+    cmd: python src/split_dataset.py
+    deps:
+    - path: data/dataset_featurized.csv
+      hash: md5
+      md5: 47f59e06df7d86616cc6892cbccbba0f
+      size: 100952
+    - path: params.yaml
+      hash: md5
+      md5: a84762902068538bec2593171544c189
+      size: 56
+    - path: src/split_dataset.py
+      hash: md5
+      md5: 88357fbb1d1c0b9561d0e5141e13afd4
+      size: 959
+    params:
+      params.yaml:
+        split_dataset.test_size: 0.2
+    outs:
+    - path: data/test.csv
+      hash: md5
+      md5: 90828cc6ad88b489331c0eb8980f36bf
+      size: 20077
+    - path: data/train.csv
+      hash: md5
+      md5: b8d7ef49b456bdff1b86d54e6c88507e
+      size: 80084
